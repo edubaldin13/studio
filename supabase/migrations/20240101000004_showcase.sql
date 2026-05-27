@@ -1,6 +1,3 @@
--- Migration: Add showcase column to generations table
--- Run this in Supabase SQL Editor
-
 ALTER TABLE public.generations
   ADD COLUMN IF NOT EXISTS showcase BOOLEAN NOT NULL DEFAULT false;
 

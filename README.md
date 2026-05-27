@@ -26,6 +26,43 @@ Transforma fotos de celular em composições de estúdio fotográfico usando Goo
 
 ## Como rodar localmente
 
+### Pré-requisitos
+
+- **Node.js** 20+
+- **Docker** (necessário para o Supabase local)
+- **Supabase CLI** (`npm install -g supabase`)
+
+### Subindo o Supabase local
+
+O projeto usa o Supabase CLI para subir todos os serviços (PostgreSQL, Auth, Storage, Inbucket) via Docker:
+
+```bash
+# 1. Iniciar todos os serviços do Supabase
+npx supabase start
+
+# 2. Ver as credenciais locais
+npx supabase status
+# Anote: API URL, anon key, service_role key
+```
+
+Isso vai subir:
+| Serviço | URL |
+|---------|-----|
+| API (REST) | http://localhost:54321 |
+| DB (PostgreSQL) | localhost:54322 |
+| Studio | http://localhost:54323 |
+| Inbucket (e-mails) | http://localhost:54324 |
+
+### Rodando as migrations
+
+Após o Supabase estar rodando, aplique as migrations:
+
+```bash
+npx supabase db push
+```
+
+### Rodando a aplicação
+
 ```bash
 # 1. Clonar
 git clone https://github.com/giovani-neksti/studio.git
@@ -36,16 +73,16 @@ npm install
 
 # 3. Configurar variáveis de ambiente
 cp .env.example .env.local
-# Preencher todas as variáveis (ver seção "Variáveis de Ambiente")
+# Preencher com as credenciais do `npx supabase status`
+# e as chaves de Vertex AI, Stripe, Resend
 
-# 4. Rodar migrations no Supabase SQL Editor
-# (ver seção "Banco de Dados")
-
-# 5. Iniciar dev server
+# 4. Iniciar dev server
 npm run dev
 ```
 
 Acesse `http://localhost:3000`.
+
+> **Dica:** O Inbucket (http://localhost:54324) captura os e-mails OTP enviados localmente — útil para testar login sem Resend.
 
 ---
 
